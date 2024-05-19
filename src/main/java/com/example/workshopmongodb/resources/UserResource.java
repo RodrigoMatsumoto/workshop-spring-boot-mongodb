@@ -10,7 +10,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -30,7 +29,7 @@ public class UserResource {
 
   @GetMapping(value = "/{id}")
   public ResponseEntity<UserDTO> findById(@PathVariable String id) {
-    Optional<User> user = userService.findById(id);
+    User user = userService.findById(id);
 
     return ResponseEntity.ok().body(new UserDTO(user));
   }
@@ -46,6 +45,15 @@ public class UserResource {
   @DeleteMapping(value = "/{id}")
   public ResponseEntity<Void> delete(@PathVariable String id) {
     userService.delete(id);
+
+    return ResponseEntity.noContent().build();
+  }
+
+  @PutMapping(value = "/{id}")
+  public ResponseEntity<Void> update(@RequestBody UserDTO userDTO, @PathVariable String id) {
+    User user = userService.fromDTO(userDTO);
+    user.setId(id);
+    user = userService.update(user);
 
     return ResponseEntity.noContent().build();
   }
