@@ -1,6 +1,7 @@
 package com.example.workshopmongodb.services;
 
 import com.example.workshopmongodb.domain.User;
+import com.example.workshopmongodb.dto.UserDTO;
 import com.example.workshopmongodb.repository.UserRepository;
 import com.example.workshopmongodb.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,13 @@ public class UserService {
     }
 
     return user;
+  }
+
+  public User insert(User user) {
+    return userRepository.insert(user);
+  }
+
+  public User fromDTO(UserDTO userDTO) {
+    return new User(userDTO.getId(), userDTO.getName(), userDTO.getEmail());
   }
 }
