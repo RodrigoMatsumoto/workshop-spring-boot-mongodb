@@ -1,5 +1,6 @@
 package com.example.workshopmongodb.resources;
 
+import com.example.workshopmongodb.domain.Post;
 import com.example.workshopmongodb.domain.User;
 import com.example.workshopmongodb.dto.UserDTO;
 import com.example.workshopmongodb.services.UserService;
@@ -53,8 +54,14 @@ public class UserResource {
   public ResponseEntity<Void> update(@RequestBody UserDTO userDTO, @PathVariable String id) {
     User user = userService.fromDTO(userDTO);
     user.setId(id);
-    user = userService.update(user);
+    userService.update(user);
 
     return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping(value = "/{id}/posts")
+  public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+    User user = userService.findById(id);
+    return ResponseEntity.ok().body(user.getPosts());
   }
 }
